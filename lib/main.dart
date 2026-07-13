@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,34 +37,35 @@ class MyApp extends StatelessWidget {
           onSecondary: Colors.white,
           onSurface: kWarmWood,
         ),
-        textTheme: GoogleFonts.plusJakartaSansTextTheme(
-          Theme.of(context).textTheme,
-        ).copyWith(
-          displayLarge: GoogleFonts.fraunces(
-            textStyle: const TextStyle(
-              color: kWarmWood,
-              fontWeight: FontWeight.bold,
+        textTheme:
+            GoogleFonts.plusJakartaSansTextTheme(
+              Theme.of(context).textTheme,
+            ).copyWith(
+              displayLarge: GoogleFonts.fraunces(
+                textStyle: const TextStyle(
+                  color: kWarmWood,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              displayMedium: GoogleFonts.fraunces(
+                textStyle: const TextStyle(
+                  color: kWarmWood,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              displaySmall: GoogleFonts.fraunces(
+                textStyle: const TextStyle(
+                  color: kWarmWood,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              titleLarge: GoogleFonts.fraunces(
+                textStyle: const TextStyle(
+                  color: kWarmWood,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
-          ),
-          displayMedium: GoogleFonts.fraunces(
-            textStyle: const TextStyle(
-              color: kWarmWood,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          displaySmall: GoogleFonts.fraunces(
-            textStyle: const TextStyle(
-              color: kWarmWood,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          titleLarge: GoogleFonts.fraunces(
-            textStyle: const TextStyle(
-              color: kWarmWood,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
       ),
       home: const PortfolioHomePage(),
     );
@@ -119,19 +121,19 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kCreamBg.withOpacity(0.95),
+        backgroundColor: kCreamBg.withValues(alpha: 0.95),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         shadowColor: Colors.transparent,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: kSandSurface.withOpacity(0.7),
+            color: kSandSurface.withValues(alpha: 0.7),
             height: 1,
           ),
         ),
         title: Text(
-          "R. Borger-Johnson",
+          "Rory Borger-Johnson",
           style: GoogleFonts.fraunces(
             color: kWarmWood,
             fontWeight: FontWeight.bold,
@@ -141,12 +143,30 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
         actions: isMobile
             ? null
             : [
-                HoverNavButton(label: "Home", onTap: () => _scrollToSection(_homeKey)),
-                HoverNavButton(label: "About", onTap: () => _scrollToSection(_aboutKey)),
-                HoverNavButton(label: "CS Projects", onTap: () => _scrollToSection(_csProjectsKey)),
-                HoverNavButton(label: "Design", onTap: () => _scrollToSection(_designGalleryKey)),
-                HoverNavButton(label: "Skills", onTap: () => _scrollToSection(_skillsKey)),
-                HoverNavButton(label: "Contact", onTap: () => _scrollToSection(_contactKey)),
+                HoverNavButton(
+                  label: "Home",
+                  onTap: () => _scrollToSection(_homeKey),
+                ),
+                HoverNavButton(
+                  label: "About",
+                  onTap: () => _scrollToSection(_aboutKey),
+                ),
+                HoverNavButton(
+                  label: "CS Projects",
+                  onTap: () => _scrollToSection(_csProjectsKey),
+                ),
+                HoverNavButton(
+                  label: "Design",
+                  onTap: () => _scrollToSection(_designGalleryKey),
+                ),
+                HoverNavButton(
+                  label: "Skills",
+                  onTap: () => _scrollToSection(_skillsKey),
+                ),
+                HoverNavButton(
+                  label: "Contact",
+                  onTap: () => _scrollToSection(_contactKey),
+                ),
                 const SizedBox(width: 24),
               ],
       ),
@@ -155,10 +175,28 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
         controller: _scrollController,
         child: Column(
           children: [
-            _buildSection(key: _homeKey, child: HeroSection(csKey: _csProjectsKey, contactKey: _contactKey, onScroll: _scrollToSection)),
-            _buildSection(key: _aboutKey, child: AboutSection(onViewResume: () => _showResumeDialog(context))),
-            _buildSection(key: _csProjectsKey, child: const CSProjectsSection()),
-            _buildSection(key: _designGalleryKey, child: const DesignGallerySection()),
+            _buildSection(
+              key: _homeKey,
+              child: HeroSection(
+                csKey: _csProjectsKey,
+                contactKey: _contactKey,
+                onScroll: _scrollToSection,
+              ),
+            ),
+            _buildSection(
+              key: _aboutKey,
+              child: AboutSection(
+                onViewResume: () => _showResumeDialog(context),
+              ),
+            ),
+            _buildSection(
+              key: _csProjectsKey,
+              child: const CSProjectsSection(),
+            ),
+            _buildSection(
+              key: _designGalleryKey,
+              child: const DesignGallerySection(),
+            ),
             _buildSection(key: _skillsKey, child: const SkillsSection()),
             _buildSection(key: _contactKey, child: const ContactSection()),
             const FooterSection(),
@@ -188,9 +226,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
-              color: kSandSurface,
-            ),
+            decoration: const BoxDecoration(color: kSandSurface),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -245,7 +281,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       builder: (BuildContext context) {
         return Dialog(
           backgroundColor: kCreamBg,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: Container(
             width: 600,
             padding: const EdgeInsets.all(32),
@@ -283,38 +321,42 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                   const SizedBox(height: 24),
                   const Divider(color: kSandSurface, thickness: 1.5),
                   const SizedBox(height: 16),
-                  
+
                   // Education Section
                   _resumeSectionTitle("EDUCATION"),
                   _resumeItem(
                     title: "B.S. in Computer Science",
                     subtitle: "University of Design & Technology",
                     period: "2022 - 2026",
-                    details: "Specialized in Software Engineering and Human-Computer Interaction. GPA: 3.8/4.0.",
+                    details:
+                        "Specialized in Software Engineering and Human-Computer Interaction. GPA: 3.8/4.0.",
                   ),
                   _resumeItem(
                     title: "Minor in Graphic Design",
                     subtitle: "Fine Arts Institute",
                     period: "2023 - 2025",
-                    details: "Focused on Brand Identity, Grid Systems, Typography, and UI/UX.",
+                    details:
+                        "Focused on Brand Identity, Grid Systems, Typography, and UI/UX.",
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Experience Section
                   _resumeSectionTitle("EXPERIENCE"),
                   _resumeItem(
                     title: "Full-Stack Software Engineer Intern",
                     subtitle: "Aesthetic Systems Inc.",
                     period: "Summer 2025",
-                    details: "Developed user-facing Flutter applications, optimized dashboard queries, and participated in frontend design refactoring.",
+                    details:
+                        "Developed user-facing Flutter applications, optimized dashboard queries, and participated in frontend design refactoring.",
                   ),
                   _resumeItem(
                     title: "Freelance Graphic Designer & Web Developer",
                     subtitle: "Self-Employed",
                     period: "2023 - Present",
-                    details: "Designed brand logos, promotional poster systems, and implemented responsive portfolio/landing sites for local clients.",
+                    details:
+                        "Designed brand logos, promotional poster systems, and implemented responsive portfolio/landing sites for local clients.",
                   ),
-                  
+
                   const SizedBox(height: 24),
                   Align(
                     alignment: Alignment.centerRight,
@@ -322,15 +364,22 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kTerracotta,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 14,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       icon: const Icon(Icons.download, size: 20),
                       label: const Text("Download Full PDF"),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text("Resume PDF download simulated. (Linked asset active in build)"),
+                            content: Text(
+                              "Resume PDF download simulated. (Linked asset active in build)",
+                            ),
                             backgroundColor: kSageGreen,
                           ),
                         );
@@ -401,7 +450,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
           Text(
             subtitle,
             style: GoogleFonts.plusJakartaSans(
-              color: kWarmWood.withOpacity(0.7),
+              color: kWarmWood.withValues(alpha: 0.7),
               fontSize: 14,
               fontStyle: FontStyle.italic,
             ),
@@ -410,7 +459,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
           Text(
             details,
             style: GoogleFonts.plusJakartaSans(
-              color: kWarmWood.withOpacity(0.8),
+              color: kWarmWood.withValues(alpha: 0.8),
               fontSize: 14,
             ),
           ),
@@ -506,25 +555,28 @@ class _HoverableCardState extends State<HoverableCard> {
           curve: Curves.easeOutCubic,
           transform: _isHovered
               ? (Matrix4.identity()
-                ..translate(widget.translationOffset.dx, widget.translationOffset.dy)
-                ..scale(widget.scaleAmount))
+                  ..translate(
+                    widget.translationOffset.dx,
+                    widget.translationOffset.dy,
+                  )
+                  ..scale(widget.scaleAmount))
               : Matrix4.identity(),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             boxShadow: _isHovered
                 ? [
                     BoxShadow(
-                      color: kWarmWood.withOpacity(0.12),
+                      color: kWarmWood.withValues(alpha: 0.12),
                       blurRadius: 18,
                       offset: const Offset(0, 10),
-                    )
+                    ),
                   ]
                 : [
                     BoxShadow(
-                      color: kWarmWood.withOpacity(0.04),
+                      color: kWarmWood.withValues(alpha: 0.04),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
-                    )
+                    ),
                   ],
           ),
           child: widget.child,
@@ -542,7 +594,12 @@ class HeroSection extends StatelessWidget {
   final GlobalKey csKey;
   final GlobalKey contactKey;
   final Function(GlobalKey) onScroll;
-  const HeroSection({super.key, required this.csKey, required this.contactKey, required this.onScroll});
+  const HeroSection({
+    super.key,
+    required this.csKey,
+    required this.contactKey,
+    required this.onScroll,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -570,7 +627,9 @@ class HeroSection extends StatelessWidget {
 
   Widget _buildHeroText(BuildContext context, {required bool isMobile}) {
     return Column(
-      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      crossAxisAlignment: isMobile
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
@@ -584,59 +643,86 @@ class HeroSection extends StatelessWidget {
         ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.2, end: 0),
         const SizedBox(height: 16),
         Text(
-          "Bridging technical complexity and visual harmony.",
-          textAlign: isMobile ? TextAlign.center : TextAlign.left,
-          style: GoogleFonts.fraunces(
-            color: kWarmWood,
-            fontSize: isMobile ? 36 : 54,
-            fontWeight: FontWeight.bold,
-            height: 1.15,
-          ),
-        ).animate().fadeIn(delay: 200.ms, duration: 600.ms).slideY(begin: 0.15, end: 0),
+              "Bridging technical complexity and visual harmony.",
+              textAlign: isMobile ? TextAlign.center : TextAlign.left,
+              style: GoogleFonts.fraunces(
+                color: kWarmWood,
+                fontSize: isMobile ? 36 : 54,
+                fontWeight: FontWeight.bold,
+                height: 1.15,
+              ),
+            )
+            .animate()
+            .fadeIn(delay: 200.ms, duration: 600.ms)
+            .slideY(begin: 0.15, end: 0),
         const SizedBox(height: 24),
         Text(
-          "Hi, I'm R. Borger-Johnson. I build performant backend and mobile systems while maintaining a high standard for editorial typography and graphic design.",
-          textAlign: isMobile ? TextAlign.center : TextAlign.left,
-          style: GoogleFonts.plusJakartaSans(
-            color: kWarmWood.withOpacity(0.85),
-            fontSize: 16,
-            height: 1.6,
-          ),
-        ).animate().fadeIn(delay: 400.ms, duration: 600.ms).slideY(begin: 0.1, end: 0),
+              "Hi, I'm R. Borger-Johnson. I build performant backend and mobile systems while maintaining a high standard for editorial typography and graphic design.",
+              textAlign: isMobile ? TextAlign.center : TextAlign.left,
+              style: GoogleFonts.plusJakartaSans(
+                color: kWarmWood.withValues(alpha: 0.85),
+                fontSize: 16,
+                height: 1.6,
+              ),
+            )
+            .animate()
+            .fadeIn(delay: 400.ms, duration: 600.ms)
+            .slideY(begin: 0.1, end: 0),
         const SizedBox(height: 32),
-        Row(
-          mainAxisAlignment: isMobile ? MainAxisAlignment.center : MainAxisAlignment.start,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kTerracotta,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                elevation: 2,
+        FittedBox(
+          fit: BoxFit.fitWidth,
+          child: Row(
+            mainAxisAlignment: isMobile
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.start,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kTerracotta,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 18,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 2,
+                ),
+                onPressed: () => onScroll(csKey),
+                child: Text(
+                  "View Projects",
+                  style: GoogleFonts.plusJakartaSans(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
               ),
-              onPressed: () => onScroll(csKey),
-              child: Text(
-                "View Projects",
-                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, fontSize: 15),
+              const SizedBox(width: 16),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: kTerracotta,
+                  side: const BorderSide(color: kTerracotta, width: 1.5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 18,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () => onScroll(contactKey),
+                child: Text(
+                  "Get in Touch",
+                  style: GoogleFonts.plusJakartaSans(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(width: 16),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                foregroundColor: kTerracotta,
-                side: const BorderSide(color: kTerracotta, width: 1.5),
-                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              onPressed: () => onScroll(contactKey),
-              child: Text(
-                "Get in Touch",
-                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-            ),
-          ],
-        ).animate().fadeIn(delay: 600.ms, duration: 600.ms),
+            ],
+          ).animate().fadeIn(delay: 600.ms, duration: 600.ms),
+        ),
       ],
     );
   }
@@ -657,30 +743,38 @@ class CreativeHeroGraphic extends StatelessWidget {
           Positioned(
             left: 30,
             top: 30,
-            child: Container(
-              width: 220,
-              height: 220,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: kTerracottaLight,
-              ),
-            ).animate().fadeIn(duration: 800.ms).scale(begin: const Offset(0.5, 0.5)),
+            child:
+                Container(
+                      width: 220,
+                      height: 220,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: kTerracottaLight,
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(duration: 800.ms)
+                    .scale(begin: const Offset(0.5, 0.5)),
           ),
           // 2. Sage Green Arc/Rotated Box
           Positioned(
             right: 20,
             bottom: 40,
-            child: RotationTransition(
-              turns: const AlwaysStoppedAnimation(15 / 360),
-              child: Container(
-                width: 160,
-                height: 160,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(32),
-                  color: kSageGreen.withOpacity(0.2),
-                ),
-              ),
-            ).animate().fadeIn(delay: 200.ms, duration: 800.ms).slideY(begin: 0.3, end: 0),
+            child:
+                RotationTransition(
+                      turns: const AlwaysStoppedAnimation(15 / 360),
+                      child: Container(
+                        width: 160,
+                        height: 160,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(32),
+                          color: kSageGreen.withValues(alpha: 0.2),
+                        ),
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(delay: 200.ms, duration: 800.ms)
+                    .slideY(begin: 0.3, end: 0),
           ),
           // 3. Grid representation (Logic)
           Positioned(
@@ -701,7 +795,7 @@ class CreativeHeroGraphic extends StatelessWidget {
                   return Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: kWarmWood.withOpacity(0.08),
+                      color: kWarmWood.withValues(alpha: 0.08),
                     ),
                   );
                 },
@@ -712,56 +806,72 @@ class CreativeHeroGraphic extends StatelessWidget {
           Positioned(
             right: 60,
             top: 60,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [kTerracotta, kSageGreen],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-            ).animate().fadeIn(delay: 600.ms, duration: 800.ms).scale(begin: const Offset(0.2, 0.2)),
+            child:
+                Container(
+                      width: 100,
+                      height: 100,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [kTerracotta, kSageGreen],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(delay: 600.ms, duration: 800.ms)
+                    .scale(begin: const Offset(0.2, 0.2)),
           ),
           // 5. Code bracket symbol floating
           Positioned(
             left: 90,
             top: 110,
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: kWarmWood.withOpacity(0.06),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              child: const Icon(Icons.code, color: kWarmWood, size: 24),
-            ).animate().fadeIn(delay: 800.ms, duration: 800.ms).slideX(begin: -0.2, end: 0),
+            child:
+                Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: kWarmWood.withValues(alpha: 0.06),
+                            blurRadius: 10,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(Icons.code, color: kWarmWood, size: 24),
+                    )
+                    .animate()
+                    .fadeIn(delay: 800.ms, duration: 800.ms)
+                    .slideX(begin: -0.2, end: 0),
           ),
           // 6. Paint brush symbol floating
           Positioned(
             right: 90,
             bottom: 90,
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: kWarmWood.withOpacity(0.06),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              child: const Icon(Icons.palette, color: kTerracotta, size: 24),
-            ).animate().fadeIn(delay: 900.ms, duration: 800.ms).slideX(begin: 0.2, end: 0),
+            child:
+                Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: kWarmWood.withValues(alpha: 0.06),
+                            blurRadius: 10,
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.palette,
+                        color: kTerracotta,
+                        size: 24,
+                      ),
+                    )
+                    .animate()
+                    .fadeIn(delay: 900.ms, duration: 800.ms)
+                    .slideX(begin: 0.2, end: 0),
           ),
         ],
       ),
@@ -786,7 +896,7 @@ class AboutSection extends StatelessWidget {
       height: 380,
       width: 310,
       decoration: BoxDecoration(
-        color: kSandSurface.withOpacity(0.6),
+        color: kSandSurface.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: kSandSurface, width: 1.5),
       ),
@@ -819,10 +929,10 @@ class AboutSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: kWarmWood.withOpacity(0.06),
+                    color: kWarmWood.withValues(alpha: 0.06),
                     blurRadius: 12,
                     offset: const Offset(0, 6),
-                  )
+                  ),
                 ],
               ),
               child: Column(
@@ -851,9 +961,9 @@ class AboutSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "San Francisco, CA",
+                    "Batavia, IL",
                     style: GoogleFonts.plusJakartaSans(
-                      color: kWarmWood.withOpacity(0.6),
+                      color: kWarmWood.withValues(alpha: 0.6),
                       fontSize: 13,
                     ),
                   ),
@@ -864,17 +974,19 @@ class AboutSection extends StatelessWidget {
                       _infoBadge("Logic", Icons.code),
                       _infoBadge("Form", Icons.palette),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
 
     final narrative = Column(
-      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      crossAxisAlignment: isMobile
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       children: [
         Text(
           "ABOUT ME",
@@ -900,7 +1012,7 @@ class AboutSection extends StatelessWidget {
           "I have always felt split between the engineering laboratory and the design studio. Rather than choosing one, I decided to master both. My technical focus is on performance-sensitive applications, interactive interfaces, and robust systems architecture.",
           textAlign: isMobile ? TextAlign.center : TextAlign.left,
           style: GoogleFonts.plusJakartaSans(
-            color: kWarmWood.withOpacity(0.85),
+            color: kWarmWood.withValues(alpha: 0.85),
             fontSize: 15,
             height: 1.6,
           ),
@@ -910,7 +1022,7 @@ class AboutSection extends StatelessWidget {
           "On the design side, I curate brand assets, design clean user experiences (UI/UX), and draft grid-based editorial prints. This duality lets me build developer-friendly APIs and user-friendly products without compromising on either side.",
           textAlign: isMobile ? TextAlign.center : TextAlign.left,
           style: GoogleFonts.plusJakartaSans(
-            color: kWarmWood.withOpacity(0.85),
+            color: kWarmWood.withValues(alpha: 0.85),
             fontSize: 15,
             height: 1.6,
           ),
@@ -921,7 +1033,9 @@ class AboutSection extends StatelessWidget {
             backgroundColor: kWarmWood,
             foregroundColor: kCreamBg,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
           icon: const Icon(Icons.description, size: 20),
           label: Text(
@@ -934,13 +1048,7 @@ class AboutSection extends StatelessWidget {
     );
 
     return isMobile
-        ? Column(
-            children: [
-              imageCard,
-              const SizedBox(height: 48),
-              narrative,
-            ],
-          )
+        ? Column(children: [imageCard, const SizedBox(height: 48), narrative])
         : Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -987,7 +1095,29 @@ class CSProjectsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isMobile = screenWidth < 768;
-
+    final projectsData = [
+      {
+        "icon": Icons.analytics_outlined,
+        "title": "Aesthetic Data Visualizer",
+        "description":
+            "A custom data analytics dashboard parsing massive CSV/JSON datasets and rendering them via high-framerate custom animations and SVG graphics.",
+        "tags": ["Dart", "Flutter Web", "SQLite"],
+      },
+      {
+        "icon": Icons.psychology_outlined,
+        "title": "Neural Style Transfer API",
+        "description":
+            "An advanced PyTorch service allowing graphic designers to transfer visual styling from classic poster layouts onto modern digital photos in real-time.",
+        "tags": ["Python", "PyTorch", "FastAPI"],
+      },
+      {
+        "icon": Icons.blur_linear,
+        "title": "Interactive Physics Engine",
+        "description":
+            "A 2D particle and rigid-body simulator built in Go and compiled into WebAssembly for high-performance physics in web browsers.",
+        "tags": ["Go", "WebAssembly", "Canvas"],
+      },
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -1015,38 +1145,30 @@ class CSProjectsSection extends StatelessWidget {
           "A selection of software engineering projects, showing a mix of Flutter development, backend architecture, and graphics programming.",
           textAlign: TextAlign.center,
           style: GoogleFonts.plusJakartaSans(
-            color: kWarmWood.withOpacity(0.7),
+            color: kWarmWood.withValues(alpha: 0.7),
             fontSize: 15,
           ),
         ),
         const SizedBox(height: 48),
-        GridView.count(
-          crossAxisCount: isMobile ? 1 : (screenWidth < 950 ? 2 : 3),
-          crossAxisSpacing: 24,
-          mainAxisSpacing: 24,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          childAspectRatio: isMobile ? 1.05 : (screenWidth < 950 ? 0.95 : 0.88),
-          children: [
-            _buildCSProjectCard(
-              icon: Icons.analytics_outlined,
-              title: "Aesthetic Data Visualizer",
-              description: "A custom data analytics dashboard parsing massive CSV/JSON datasets and rendering them via high-framerate custom animations and SVG graphics.",
-              tags: ["Dart", "Flutter Web", "SQLite"],
-            ),
-            _buildCSProjectCard(
-              icon: Icons.psychology_outlined,
-              title: "Neural Style Transfer API",
-              description: "An advanced PyTorch service allowing graphic designers to transfer visual styling from classic poster layouts onto modern digital photos in real-time.",
-              tags: ["Python", "PyTorch", "FastAPI"],
-            ),
-            _buildCSProjectCard(
-              icon: Icons.blur_linear,
-              title: "Interactive Physics Engine",
-              description: "A 2D particle and rigid-body simulator built in Go and compiled into WebAssembly for high-performance physics in web browsers.",
-              tags: ["Go", "WebAssembly", "Canvas"],
-            ),
-          ],
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 2000),
+          child: MasonryGridView.count(
+            crossAxisCount: isMobile ? 1 : (screenWidth < 950 ? 2 : 3),
+            crossAxisSpacing: 24,
+            mainAxisSpacing: 24,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 3,
+            itemBuilder: (BuildContext context, int index) {
+              final project = projectsData[index];
+              return _buildCSProjectCard(
+                icon: project["icon"] as IconData,
+                title: project["title"] as String,
+                description: project["description"] as String,
+                tags: project["tags"] as List<String>,
+              );
+            },
+          ),
         ),
       ],
     );
@@ -1062,48 +1184,62 @@ class CSProjectsSection extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: kSandSurface.withOpacity(0.4),
-          border: Border.all(color: kSandSurface.withOpacity(0.8), width: 1.5),
+          color: kSandSurface.withValues(alpha: 0.4),
+          border: Border.all(
+            color: kSandSurface.withValues(alpha: 0.8),
+            width: 1.5,
+          ),
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: kCreamBg,
-                shape: BoxShape.circle,
+        child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: kCreamBg,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: kTerracotta, size: 26),
               ),
-              child: Icon(icon, color: kTerracotta, size: 26),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              title,
-              style: GoogleFonts.fraunces(
-                color: kWarmWood,
-                fontSize: 19,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: Text(
-                description,
-                style: GoogleFonts.plusJakartaSans(
-                  color: kWarmWood.withOpacity(0.8),
-                  fontSize: 14,
-                  height: 1.45,
+              const SizedBox(height: 18),
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  title,
+                  style: GoogleFonts.fraunces(
+                    color: kWarmWood,
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: tags
-                  .map((tag) => Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsetsGeometry.only(bottom: 12),
+                child: Text(
+                  description,
+                  style: GoogleFonts.plusJakartaSans(
+                    color: kWarmWood.withValues(alpha: 0.8),
+                    fontSize: 14,
+                    height: 1.45,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: tags
+                    .map(
+                      (tag) => Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: kSageGreenLight,
                           borderRadius: BorderRadius.circular(8),
@@ -1116,34 +1252,52 @@ class CSProjectsSection extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                      ))
-                  .toList(),
-            ),
-            const SizedBox(height: 18),
-            const Divider(color: kSandSurface, height: 1),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const FaIcon(FontAwesomeIcons.github, size: 15, color: kWarmWood),
-                  label: Text(
-                    "GitHub",
-                    style: GoogleFonts.plusJakartaSans(color: kWarmWood, fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const SizedBox(height: 18),
+              const Divider(color: kSandSurface, height: 1),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton.icon(
+                    onPressed: () {},
+                    icon: const FaIcon(
+                      FontAwesomeIcons.github,
+                      size: 15,
+                      color: kWarmWood,
+                    ),
+                    label: Text(
+                      "GitHub",
+                      style: GoogleFonts.plusJakartaSans(
+                        color: kWarmWood,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
-                ),
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const FaIcon(FontAwesomeIcons.arrowUpRightFromSquare, size: 12, color: kTerracotta),
-                  label: Text(
-                    "Live Demo",
-                    style: GoogleFonts.plusJakartaSans(color: kTerracotta, fontWeight: FontWeight.bold, fontSize: 13),
+                  TextButton.icon(
+                    onPressed: () {},
+                    icon: const FaIcon(
+                      FontAwesomeIcons.arrowUpRightFromSquare,
+                      size: 12,
+                      color: kTerracotta,
+                    ),
+                    label: Text(
+                      "Live Demo",
+                      style: GoogleFonts.plusJakartaSans(
+                        color: kTerracotta,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1189,7 +1343,7 @@ class DesignGallerySection extends StatelessWidget {
           "A selection of graphic design files rendered natively in Flutter, illustrating my approach to branding, interfaces, and poster layouts.",
           textAlign: TextAlign.center,
           style: GoogleFonts.plusJakartaSans(
-            color: kWarmWood.withOpacity(0.7),
+            color: kWarmWood.withValues(alpha: 0.7),
             fontSize: 15,
           ),
         ),
@@ -1277,10 +1431,16 @@ class _GalleryItemFrameState extends State<GalleryItemFrame> {
                     bottom: _isHovered ? 0 : -90,
                     height: 90,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [kWarmWood.withOpacity(0.95), kWarmWood.withOpacity(0.85)],
+                          colors: [
+                            kWarmWood.withValues(alpha: 0.95),
+                            kWarmWood.withValues(alpha: 0.85),
+                          ],
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
                         ),
@@ -1342,7 +1502,7 @@ class SustainaBrandCard extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: kSageGreen.withOpacity(0.12),
+                color: kSageGreen.withValues(alpha: 0.12),
               ),
             ),
           ),
@@ -1360,13 +1520,17 @@ class SustainaBrandCard extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: kSageGreen.withOpacity(0.2),
+                      color: kSageGreen.withValues(alpha: 0.2),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
-                    )
+                    ),
                   ],
                 ),
-                child: const Icon(Icons.eco_outlined, color: Colors.white, size: 26),
+                child: const Icon(
+                  Icons.eco_outlined,
+                  color: Colors.white,
+                  size: 26,
+                ),
               ),
               const SizedBox(height: 12),
               Text(
@@ -1424,7 +1588,7 @@ class AuraAppCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                color: Colors.white.withOpacity(0.95),
+                color: Colors.white.withValues(alpha: 0.95),
                 child: Stack(
                   children: [
                     Positioned(
@@ -1445,9 +1609,11 @@ class AuraAppCard extends StatelessWidget {
                         height: 86,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.55),
+                          color: Colors.white.withValues(alpha: 0.55),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.white.withOpacity(0.6)),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.6),
+                          ),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1460,12 +1626,24 @@ class AuraAppCard extends StatelessWidget {
                                 color: kTerracotta,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.spa_outlined, color: Colors.white, size: 13),
+                              child: const Icon(
+                                Icons.spa_outlined,
+                                color: Colors.white,
+                                size: 13,
+                              ),
                             ),
                             const SizedBox(height: 6),
-                            Container(width: 40, height: 5, color: kWarmWood.withOpacity(0.6)),
+                            Container(
+                              width: 40,
+                              height: 5,
+                              color: kWarmWood.withValues(alpha: 0.6),
+                            ),
                             const SizedBox(height: 4),
-                            Container(width: 26, height: 4, color: kWarmWood.withOpacity(0.4)),
+                            Container(
+                              width: 26,
+                              height: 4,
+                              color: kWarmWood.withValues(alpha: 0.4),
+                            ),
                           ],
                         ),
                       ),
@@ -1500,7 +1678,7 @@ class AbstractGeometryCard extends StatelessWidget {
               height: 90,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: kTerracotta.withOpacity(0.85),
+                color: kTerracotta.withValues(alpha: 0.85),
               ),
             ),
           ),
@@ -1512,16 +1690,14 @@ class AbstractGeometryCard extends StatelessWidget {
               height: 80,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: kWarmWood.withOpacity(0.9),
+                color: kWarmWood.withValues(alpha: 0.9),
               ),
             ),
           ),
           Positioned.fill(
             child: Opacity(
               opacity: 0.1,
-              child: CustomPaint(
-                painter: GridPainter(),
-              ),
+              child: CustomPaint(painter: GridPainter()),
             ),
           ),
           Positioned(
@@ -1605,7 +1781,7 @@ class VectorIllustrationCard extends StatelessWidget {
                 width: 130,
                 height: 130,
                 decoration: BoxDecoration(
-                  color: kSageGreen.withOpacity(0.9),
+                  color: kSageGreen.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
@@ -1630,11 +1806,23 @@ class VectorIllustrationCard extends StatelessWidget {
             top: 25,
             child: Column(
               children: [
-                Container(width: 70, height: 2, color: kCreamBg.withOpacity(0.3)),
+                Container(
+                  width: 70,
+                  height: 2,
+                  color: kCreamBg.withValues(alpha: 0.3),
+                ),
                 const SizedBox(height: 5),
-                Container(width: 45, height: 2, color: kCreamBg.withOpacity(0.3)),
+                Container(
+                  width: 45,
+                  height: 2,
+                  color: kCreamBg.withValues(alpha: 0.3),
+                ),
                 const SizedBox(height: 5),
-                Container(width: 25, height: 2, color: kCreamBg.withOpacity(0.3)),
+                Container(
+                  width: 25,
+                  height: 2,
+                  color: kCreamBg.withValues(alpha: 0.3),
+                ),
               ],
             ),
           ),
@@ -1669,10 +1857,26 @@ class SkillsSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
-        _buildSkillBar(label: "Flutter & Dart Development", percentage: 0.95, barColor: kSageGreen),
-        _buildSkillBar(label: "Python & Machine Learning APIs", percentage: 0.85, barColor: kSageGreen),
-        _buildSkillBar(label: "Go & WebAssembly Engine", percentage: 0.75, barColor: kSageGreen),
-        _buildSkillBar(label: "Database Design & SQL (Postgres / SQLite)", percentage: 0.80, barColor: kSageGreen),
+        _buildSkillBar(
+          label: "Flutter & Dart Development",
+          percentage: 0.95,
+          barColor: kSageGreen,
+        ),
+        _buildSkillBar(
+          label: "Python & Machine Learning APIs",
+          percentage: 0.85,
+          barColor: kSageGreen,
+        ),
+        _buildSkillBar(
+          label: "Go & WebAssembly Engine",
+          percentage: 0.75,
+          barColor: kSageGreen,
+        ),
+        _buildSkillBar(
+          label: "Database Design & SQL (Postgres / SQLite)",
+          percentage: 0.80,
+          barColor: kSageGreen,
+        ),
       ],
     );
 
@@ -1689,10 +1893,26 @@ class SkillsSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
-        _buildSkillBar(label: "Figma (Interactive UI/UX Design)", percentage: 0.90, barColor: kTerracotta),
-        _buildSkillBar(label: "Adobe Illustrator (Vector Layouts)", percentage: 0.85, barColor: kTerracotta),
-        _buildSkillBar(label: "Adobe Photoshop (Post-Processing)", percentage: 0.80, barColor: kTerracotta),
-        _buildSkillBar(label: "Typography & Print Grid Systems", percentage: 0.90, barColor: kTerracotta),
+        _buildSkillBar(
+          label: "Figma (Interactive UI/UX Design)",
+          percentage: 0.90,
+          barColor: kTerracotta,
+        ),
+        _buildSkillBar(
+          label: "Adobe Illustrator (Vector Layouts)",
+          percentage: 0.85,
+          barColor: kTerracotta,
+        ),
+        _buildSkillBar(
+          label: "Adobe Photoshop (Post-Processing)",
+          percentage: 0.80,
+          barColor: kTerracotta,
+        ),
+        _buildSkillBar(
+          label: "Typography & Print Grid Systems",
+          percentage: 0.90,
+          barColor: kTerracotta,
+        ),
       ],
     );
 
@@ -1723,18 +1943,14 @@ class SkillsSection extends StatelessWidget {
           "Dividing skills into technical and graphic domains to present a dual specialization in software build processes and visual aesthetics.",
           textAlign: TextAlign.center,
           style: GoogleFonts.plusJakartaSans(
-            color: kWarmWood.withOpacity(0.7),
+            color: kWarmWood.withValues(alpha: 0.7),
             fontSize: 15,
           ),
         ),
         const SizedBox(height: 48),
         isMobile
             ? Column(
-                children: [
-                  logicSkills,
-                  const SizedBox(height: 48),
-                  formSkills,
-                ],
+                children: [logicSkills, const SizedBox(height: 48), formSkills],
               )
             : Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1761,12 +1977,14 @@ class SkillsSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                label,
-                style: GoogleFonts.plusJakartaSans(
-                  color: kWarmWood,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+              Expanded(
+                child: Text(
+                  label,
+                  style: GoogleFonts.plusJakartaSans(
+                    color: kWarmWood,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
                 ),
               ),
               Text(
@@ -1864,7 +2082,7 @@ class _ContactSectionState extends State<ContactSection> {
           "Have a project in mind, want to collaborate on open-source code, or discuss a design request? Drop me a message below.",
           textAlign: TextAlign.center,
           style: GoogleFonts.plusJakartaSans(
-            color: kWarmWood.withOpacity(0.7),
+            color: kWarmWood.withValues(alpha: 0.7),
             fontSize: 15,
           ),
         ),
@@ -1876,7 +2094,7 @@ class _ContactSectionState extends State<ContactSection> {
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: kWarmWood.withOpacity(0.04),
+                color: kWarmWood.withValues(alpha: 0.04),
                 blurRadius: 15,
                 offset: const Offset(0, 8),
               ),
@@ -1927,8 +2145,13 @@ class _ContactSectionState extends State<ContactSection> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: kTerracotta,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 18,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     elevation: 2,
                   ),
                   onPressed: () {
@@ -1988,9 +2211,11 @@ class _ContactSectionState extends State<ContactSection> {
         style: GoogleFonts.plusJakartaSans(color: kWarmWood),
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: GoogleFonts.plusJakartaSans(color: kWarmWood.withOpacity(0.6)),
+          labelStyle: GoogleFonts.plusJakartaSans(
+            color: kWarmWood.withValues(alpha: 0.6),
+          ),
           filled: true,
-          fillColor: kSandSurface.withOpacity(0.25),
+          fillColor: kSandSurface.withValues(alpha: 0.25),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(color: kSandSurface, width: 1.5),
@@ -2023,6 +2248,8 @@ class FooterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       width: double.infinity,
       color: kWarmWood,
@@ -2042,19 +2269,24 @@ class FooterSection extends StatelessWidget {
           Text(
             "Bridging code and creative aesthetics.",
             style: GoogleFonts.plusJakartaSans(
-              color: kCreamBg.withOpacity(0.6),
+              color: kCreamBg.withValues(alpha: 0.6),
               fontSize: 14,
             ),
           ),
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              _socialIcon(FontAwesomeIcons.github),
-              _socialIcon(FontAwesomeIcons.linkedinIn),
-              _socialIcon(FontAwesomeIcons.behance),
-              _socialIcon(FontAwesomeIcons.dribbble),
-              _socialIcon(FontAwesomeIcons.envelope),
+              Row(
+                children: [
+                  _socialIcon(FontAwesomeIcons.github, screenWidth),
+                  _socialIcon(FontAwesomeIcons.linkedinIn, screenWidth),
+                  _socialIcon(FontAwesomeIcons.behance, screenWidth),
+                  _socialIcon(FontAwesomeIcons.dribbble, screenWidth),
+                  _socialIcon(FontAwesomeIcons.envelope, screenWidth),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 28),
@@ -2063,7 +2295,7 @@ class FooterSection extends StatelessWidget {
           Text(
             "© ${DateTime.now().year} R. Borger-Johnson. All rights reserved. Built with Flutter Web.",
             style: GoogleFonts.plusJakartaSans(
-              color: kCreamBg.withOpacity(0.4),
+              color: kCreamBg.withValues(alpha: 0.4),
               fontSize: 12,
             ),
           ),
@@ -2072,9 +2304,12 @@ class FooterSection extends StatelessWidget {
     );
   }
 
-  Widget _socialIcon(FaIconData icon) {
+  Widget _socialIcon(FaIconData icon, double screenWidth) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 12).clamp(
+        EdgeInsets.symmetric(horizontal: 2),
+        EdgeInsets.symmetric(horizontal: 15 - (10 - screenWidth / 200)),
+      ),
       child: HoverableCard(
         scaleAmount: 1.15,
         translationOffset: const Offset(0, -3),
@@ -2082,7 +2317,7 @@ class FooterSection extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white.withOpacity(0.06),
+            color: Colors.white.withValues(alpha: 0.06),
           ),
           child: FaIcon(icon, color: kCreamBg, size: 18),
         ),

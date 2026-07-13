@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -1987,6 +1989,8 @@ class SkillsSection extends StatelessWidget {
                   ),
                 ),
               ),
+              //Because Don't like how close the text can get to the precent before it goes to a new line
+              const SizedBox(width: 12),
               Text(
                 "${(percentage * 100).toInt()}%",
                 style: GoogleFonts.plusJakartaSans(
@@ -2046,7 +2050,6 @@ class _ContactSectionState extends State<ContactSection> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _messageController = TextEditingController();
-
   @override
   void dispose() {
     _nameController.dispose();
@@ -2154,8 +2157,14 @@ class _ContactSectionState extends State<ContactSection> {
                     ),
                     elevation: 2,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    await sendEmailViaEmailJS(
+                      messageBody: _messageController.text,
+                      senderName: _nameController.text,
+                      senderEmail: _emailController.text,
+                    );
                     if (_formKey.currentState!.validate()) {
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           backgroundColor: kSageGreen,
@@ -2194,6 +2203,35 @@ class _ContactSectionState extends State<ContactSection> {
         ),
       ],
     );
+  }
+
+  Future<void> sendEmailViaEmailJS({
+    required String senderEmail,
+    required String messageBody,
+    required String senderName,
+  }) async {
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'service_id': 'PortfolioContactMe_RBJ',
+        'template_id': 'ContactForm_ugmznhb',
+        'user_id': '5bXARIJ8aSUPTcxki',
+        'template_params': {
+          'email': senderEmail,
+          'message': messageBody,
+          'name': senderName,
+        },
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Email sent successfully!');
+    } else {
+      print('Failed to send email: ${response.body}');
+    }
   }
 
   Widget _buildTextField({

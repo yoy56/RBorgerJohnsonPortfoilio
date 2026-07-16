@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:rborgerjohnsonportfoilio/graphic_design_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -165,11 +166,18 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                   label: "Skills",
                   onTap: () => _scrollToSection(_skillsKey),
                 ),
-                HoverNavButton(
-                  label: "Contact",
-                  onTap: () => _scrollToSection(_contactKey),
-                ),
-                const SizedBox(width: 24),
+                 HoverNavButton(
+                   label: "Contact",
+                   onTap: () => _scrollToSection(_contactKey),
+                 ),
+                 HoverNavButton(
+                   label: "Design Portfolio",
+                   onTap: () => Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (context) => const GraphicDesignPage()),
+                   ),
+                 ),
+                 const SizedBox(width: 24),
               ],
       ),
       endDrawer: isMobile ? _buildDrawer(context) : null,
@@ -253,12 +261,29 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
               ],
             ),
           ),
-          _drawerTile(context, "Home", _homeKey),
-          _drawerTile(context, "About", _aboutKey),
-          _drawerTile(context, "CS Projects", _csProjectsKey),
-          _drawerTile(context, "Design Work", _designGalleryKey),
-          _drawerTile(context, "Skills", _skillsKey),
-          _drawerTile(context, "Contact", _contactKey),
+           _drawerTile(context, "Home", _homeKey),
+           _drawerTile(context, "About", _aboutKey),
+           _drawerTile(context, "CS Projects", _csProjectsKey),
+           _drawerTile(context, "Design Work", _designGalleryKey),
+           ListTile(
+             title: Text(
+               "Design Portfolio Page",
+               style: GoogleFonts.plusJakartaSans(
+                 color: kTerracotta,
+                 fontWeight: FontWeight.bold,
+               ),
+             ),
+             trailing: const Icon(Icons.arrow_forward_ios, size: 14, color: kTerracotta),
+             onTap: () {
+               Navigator.of(context).pop();
+               Navigator.push(
+                 context,
+                 MaterialPageRoute(builder: (context) => const GraphicDesignPage()),
+               );
+             },
+           ),
+           _drawerTile(context, "Skills", _skillsKey),
+           _drawerTile(context, "Contact", _contactKey),
         ],
       ),
     );
@@ -327,18 +352,24 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                   // Education Section
                   _resumeSectionTitle("EDUCATION"),
                   _resumeItem(
-                    title: "B.S. in Computer Science",
-                    subtitle: "University of Design & Technology",
+                    titleElements: [
+                      "B.A. in Computer Science",
+                      "B.A. in Graphic Design",
+                      "Minor in Creative Writing",
+                    ],
+                    subtitle: "Augustana College",
                     period: "2022 - 2026",
                     details:
-                        "Specialized in Software Engineering and Human-Computer Interaction. GPA: 3.8/4.0.",
+                        "Activities and societies: Order of Omega, Alpha Phi Omega, Omicron Sigma Omicron, Concert Chorale",
+                    gpa: "3.46",
+                    educationItem: true,
                   ),
                   _resumeItem(
-                    title: "Minor in Graphic Design",
-                    subtitle: "Fine Arts Institute",
-                    period: "2023 - 2025",
-                    details:
-                        "Focused on Brand Identity, Grid Systems, Typography, and UI/UX.",
+                    title: "Full-Stack Development Course",
+                    subtitle: "Promineo Tech",
+                    period: "Aug - Nov 2021",
+                    details: "Took course through Elgin Community College",
+                    educationItem: true,
                   ),
                   const SizedBox(height: 16),
 
@@ -413,11 +444,18 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   }
 
   Widget _resumeItem({
-    required String title,
+    String? title,
+    List<String>? titleElements,
     required String subtitle,
     required String period,
     required String details,
+    String? gpa,
+    bool educationItem = false,
   }) {
+    assert(
+      title != null || titleElements != null,
+      'You must provide either a title or list of titleElements',
+    );
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Column(
@@ -427,17 +465,53 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: GoogleFonts.plusJakartaSans(
-                    color: kWarmWood,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+              if (title != null) ...[
+                if (educationItem) ...[
+                  //Education Icon
+                  const Icon(Icons.school, color: kWarmWood),
+                  const SizedBox(width: 12),
+                ],
+                Expanded(
+                  // Title
+                  child: Text(
+                    title,
+                    style: GoogleFonts.plusJakartaSans(
+                      color: kWarmWood,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
+              ],
+              if (titleElements != null)
+                Expanded(
+                  child: Row(
+                    children: [
+                      if (educationItem && title == null) ...[
+                        //Education Icon
+                        const Icon(Icons.school, color: kWarmWood),
+                        const SizedBox(width: 12),
+                      ],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Title Elements
+                          for (String elementTitle in titleElements)
+                            Text(
+                              elementTitle,
+                              style: GoogleFonts.plusJakartaSans(
+                                color: kWarmWood,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               const SizedBox(width: 8),
+              //Period
               Text(
                 period,
                 style: GoogleFonts.plusJakartaSans(
@@ -449,15 +523,32 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             ],
           ),
           const SizedBox(height: 2),
-          Text(
-            subtitle,
-            style: GoogleFonts.plusJakartaSans(
-              color: kWarmWood.withValues(alpha: 0.7),
-              fontSize: 14,
-              fontStyle: FontStyle.italic,
-            ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //Subtitle
+              Text(
+                subtitle,
+                style: GoogleFonts.plusJakartaSans(
+                  color: kWarmWood.withValues(alpha: 0.7),
+                  fontSize: 14,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              if (gpa != null)
+                Text(
+                  "GPA: $gpa",
+                  style: GoogleFonts.plusJakartaSans(
+                    color: kSageGreen.withValues(alpha: 0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+            ],
           ),
           const SizedBox(height: 4),
+          //Details
           Text(
             details,
             style: GoogleFonts.plusJakartaSans(
@@ -1373,14 +1464,43 @@ class DesignGallerySection extends StatelessWidget {
               title: "Abstract Geometry Poster",
               category: "Editorial & Grid Layouts",
             ),
-            GalleryItemFrame(
-              visualWidget: VectorIllustrationCard(),
-              title: "Earthy Geometric Landscapes",
-              category: "Vector Illustration Series",
-            ),
-          ],
-        ),
-      ],
+             GalleryItemFrame(
+               visualWidget: VectorIllustrationCard(),
+               title: "Earthy Geometric Landscapes",
+               category: "Vector Illustration Series",
+             ),
+           ],
+         ),
+         const SizedBox(height: 40),
+         OutlinedButton.icon(
+           icon: const Icon(Icons.palette_outlined, color: kTerracotta, size: 18),
+           label: Text(
+             "Explore Detailed Design Gallery",
+             style: GoogleFonts.plusJakartaSans(
+               color: kTerracotta,
+               fontWeight: FontWeight.bold,
+               fontSize: 15,
+             ),
+           ),
+           style: OutlinedButton.styleFrom(
+             foregroundColor: kTerracotta,
+             side: const BorderSide(color: kTerracotta, width: 1.5),
+             padding: const EdgeInsets.symmetric(
+               horizontal: 28,
+               vertical: 18,
+             ),
+             shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(12),
+             ),
+           ),
+           onPressed: () {
+             Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const GraphicDesignPage()),
+             );
+           },
+         ),
+       ],
     );
   }
 }
@@ -1409,70 +1529,78 @@ class _GalleryItemFrameState extends State<GalleryItemFrame> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       cursor: SystemMouseCursors.click,
-      child: HoverableCard(
-        scaleAmount: 1.02,
-        translationOffset: const Offset(0, -4),
-        child: AspectRatio(
-          aspectRatio: 1.0,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: kSandSurface, width: 1.5),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: Stack(
-                children: [
-                  Positioned.fill(child: widget.visualWidget),
-                  // Muted shade cover on hover with description info
-                  AnimatedPositioned(
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeOutCubic,
-                    left: 0,
-                    right: 0,
-                    bottom: _isHovered ? 0 : -90,
-                    height: 90,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            kWarmWood.withValues(alpha: 0.95),
-                            kWarmWood.withValues(alpha: 0.85),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const GraphicDesignPage()),
+          );
+        },
+        child: HoverableCard(
+          scaleAmount: 1.02,
+          translationOffset: const Offset(0, -4),
+          child: AspectRatio(
+            aspectRatio: 1.0,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: kSandSurface, width: 1.5),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Stack(
+                  children: [
+                    Positioned.fill(child: widget.visualWidget),
+                    // Muted shade cover on hover with description info
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeOutCubic,
+                      left: 0,
+                      right: 0,
+                      bottom: _isHovered ? 0 : -90,
+                      height: 90,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              kWarmWood.withValues(alpha: 0.95),
+                              kWarmWood.withValues(alpha: 0.85),
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: GoogleFonts.fraunces(
+                                color: kCreamBg,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              widget.category,
+                              style: GoogleFonts.plusJakartaSans(
+                                color: kSageGreenLight,
+                                fontSize: 11,
+                                letterSpacing: 0.8,
+                              ),
+                            ),
                           ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            widget.title,
-                            style: GoogleFonts.fraunces(
-                              color: kCreamBg,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            widget.category,
-                            style: GoogleFonts.plusJakartaSans(
-                              color: kSageGreenLight,
-                              fontSize: 11,
-                              letterSpacing: 0.8,
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

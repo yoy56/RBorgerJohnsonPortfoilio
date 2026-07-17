@@ -36,7 +36,7 @@ jobs:
           
           # 3. Duplicate the images so they exist at BOTH paths simultaneously
           mkdir -p build/web/assets/images
-          cp -r assets/assets/images/* assets/images/
+          cp -r assets/images/* assets/assets/images/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

@@ -4,7 +4,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Change this to 'master' if your default branch is master
+      - main
 
 jobs:
   build-and-deploy:
@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          lfs: true # 1. Force checkout of real Git LFS images if you use them
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -30,17 +32,10 @@ jobs:
 
       - name: Build Web App
         run: |
-          # 1. Build the web app normally
           flutter build web --release --base-href /RBorgerJohnsonPortfoilio/
-          
-          # 2. Tell GitHub Pages not to process this build with Jekyll
+          # 2. Prevent the deploy action from accidentally ignoring your assets
+          rm -f build/web/.gitignore 
           touch build/web/.nojekyll
-          
-          # 3. Check for the nested assets bug and flatten it if it exists
-          if [ -d "build/web/assets/assets" ]; then
-            echo "Nested assets folder detected. Flattening directory structure..."
-            cp -r build/web/assets/assets/* build/web/assets/
-          fi
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

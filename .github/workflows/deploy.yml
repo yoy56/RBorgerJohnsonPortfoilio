@@ -35,7 +35,7 @@ jobs:
           touch build/web/.nojekyll
           
           # 3. Duplicate the images so they exist at BOTH paths simultaneously
-          mkdir -p build/web/assets/images
+          mkdir -p assets/assets/images
           cp -r assets/images/* assets/assets/images/
 
       - name: Deploy to GitHub Pages

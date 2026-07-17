@@ -26,8 +26,8 @@ class _GraphicDesignPageState extends State<GraphicDesignPage> {
       deliverables: 'Logo, Brand Guidelines, Packaging, Typography',
       tools: 'Adobe Illustrator, Photoshop',
       year: '2025',
-      largeImagePath: 'images/sustainaLarge.jpg',
-      smallImagePath: 'images/sustainaSmall.jpg',
+      largeImagePath: './images/sustainaLarge.jpg',
+      smallImagePath: './images/sustainaSmall.jpg',
     ),
     ProjectData(
       id: 'aura',
@@ -40,8 +40,8 @@ class _GraphicDesignPageState extends State<GraphicDesignPage> {
       deliverables: 'Wireframes, High-Fidelity Screens, Prototypes',
       tools: 'Figma, Adobe XD, Flutter',
       year: '2026',
-      largeImagePath: 'images/meditationLarge.jpg',
-      smallImagePath: 'images/meditationSmall.jpg',
+      largeImagePath: './images/meditationLarge.jpg',
+      smallImagePath: './images/meditationSmall.jpg',
     ),
     ProjectData(
       id: 'bauhaus',
@@ -54,8 +54,8 @@ class _GraphicDesignPageState extends State<GraphicDesignPage> {
       deliverables: 'Poster Layouts, Exhibition Guide, Grid Systems',
       tools: 'Adobe Illustrator, InDesign',
       year: '2025',
-      largeImagePath: 'images/geometricLarge.jpg',
-      smallImagePath: 'images/geometricSmall.jpg',
+      largeImagePath: './images/geometricLarge.jpg',
+      smallImagePath: './images/geometricSmall.jpg',
     ),
     ProjectData(
       id: 'landscapes',
@@ -68,8 +68,8 @@ class _GraphicDesignPageState extends State<GraphicDesignPage> {
       deliverables: 'Vector Asset Library, Wall Art Prints, Wallpapers',
       tools: 'Adobe Illustrator, Procreate',
       year: '2026',
-      largeImagePath: 'images/abstractLarge.jpg',
-      smallImagePath: 'images/abstractSmall.jpg',
+      largeImagePath: './images/abstractLarge.jpg',
+      smallImagePath: './images/abstractSmall.jpg',
     ),
     ProjectData(
       id: 'bubblrhalloween',
@@ -82,8 +82,8 @@ class _GraphicDesignPageState extends State<GraphicDesignPage> {
       deliverables: 'Packaging Design, Illustration, Brand Identity',
       tools: 'Adobe Illustrator, Procreate',
       year: '2025',
-      largeImagePath: 'images/BubblrCansFront-05.jpg',
-      smallImagePath: 'images/BubblrCansFront-01.jpg',
+      largeImagePath: './images/BubblrCansFront-05.jpg',
+      smallImagePath: './images/BubblrCansFront-01.jpg',
     ),
   ];
 

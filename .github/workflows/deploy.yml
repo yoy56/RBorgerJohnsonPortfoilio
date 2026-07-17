@@ -44,10 +44,16 @@ jobs:
 
 
       - name: Build Web App
-
-        # REPLACE 'your_repo_name' WITH THE EXACT NAME OF YOUR GITHUB REPOSITORY
-
-        run: flutter build web --release --base-href /RBorgerJohnsonPortfoilio/
+        run: |
+          # 1. Build the project normally using your original setup
+          flutter build web --release --base-href /RBorgerJohnsonPortfoilio/
+          
+          # 2. Tell GitHub Pages to bypass Jekyll processing
+          touch build/web/.nojekyll
+          
+          # 3. Duplicate the images so they exist at BOTH paths simultaneously
+          mkdir -p build/web/assets/images
+          cp -r build/web/assets/assets/images/* build/web/assets/images/
 
 
 

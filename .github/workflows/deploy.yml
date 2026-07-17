@@ -29,8 +29,18 @@ jobs:
         run: flutter pub get
 
       - name: Build Web App
-        # REPLACE 'your_repo_name' WITH THE EXACT NAME OF YOUR GITHUB REPOSITORY
-        run: flutter build web --release --base-href /RBorgerJohnsonPortfoilio/
+        run: |
+          # 1. Build the web app normally
+          flutter build web --release --base-href /RBorgerJohnsonPortfoilio/
+          
+          # 2. Tell GitHub Pages not to process this build with Jekyll
+          touch build/web/.nojekyll
+          
+          # 3. Check for the nested assets bug and flatten it if it exists
+          if [ -d "build/web/assets/assets" ]; then
+            echo "Nested assets folder detected. Flattening directory structure..."
+            cp -r build/web/assets/assets/* build/web/assets/
+          fi
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
